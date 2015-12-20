@@ -7,11 +7,14 @@ import (
 	"strings"
 )
 
+//GeoPoint represent point on map.
 type GeoPoint struct {
 	latitude  float64
 	longitude float64
 }
 
+//NewGeoPoint - create a new point. Function get as argument string with geo coordinates, for example "55.753514 37.621202".
+//number 55.753514 is latitude, and 37.621202 is longitude.
 func NewGeoPoint(posString string) (*GeoPoint, error) {
 	posValues := strings.Split(posString, " ")
 
@@ -31,14 +34,17 @@ func NewGeoPoint(posString string) (*GeoPoint, error) {
 	return &GeoPoint, nil
 }
 
+//Latitude return latitude of GeoPoint.
 func (g GeoPoint) Latitude() float64 {
 	return g.latitude
 }
 
+//Longitude return longitude of GeoPoint.
 func (g GeoPoint) Longitude() float64 {
 	return g.longitude
 }
 
+//String represent GeoPoint as String.
 func (g GeoPoint) String() string {
 	Latitude := strconv.FormatFloat(g.latitude, 'f', -1, 64)
 	Longitude := strconv.FormatFloat(g.longitude, 'f', -1, 64)
@@ -51,20 +57,27 @@ func (g GeoPoint) stringToScopeRequest() string {
 	return Latitude + "," + Longitude
 }
 
+//Scope represent area on map, rectangle bounded with two point.
+//Two point placed in opposite corners of rectangle.
 type Scope struct {
 	lowerCorner GeoPoint
 	upperCorner GeoPoint
 }
 
+//ScopeSize represent size of Scope.
+//Latitude is width of rectangle.
+//Longitude is height of rectangle.
 type ScopeSize struct {
 	GeoPoint
 }
 
+//NewScope create a new scope. Function get as argument 2 GeoPoint.
 func NewScope(LowerCorner, UpperCorner GeoPoint) *Scope {
 	Scope := Scope{lowerCorner: LowerCorner, upperCorner: UpperCorner}
 	return &Scope
 }
 
+//Center return GeoPoint of center of Scope.
 func (s Scope) Center() *GeoPoint {
 	DeltaLongitude := (s.upperCorner.Longitude() - s.lowerCorner.Longitude()) * math.Pi / 180
 
@@ -86,6 +99,7 @@ func (s Scope) Center() *GeoPoint {
 	return &GeoPoint
 }
 
+//Size return size of Scope.
 func (s Scope) Size() *ScopeSize {
 	lenLatitude := math.Abs(s.lowerCorner.Latitude() - s.upperCorner.Latitude())
 	lenLongitude := math.Abs(s.lowerCorner.Longitude() - s.upperCorner.Longitude())

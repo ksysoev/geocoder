@@ -1,6 +1,6 @@
 package geocoder
 
-type Ymaps struct {
+type ymaps struct {
 	GeoObjectCollection geoObjectCollection `xml:"GeoObjectCollection"`
 }
 

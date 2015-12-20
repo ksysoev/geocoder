@@ -68,10 +68,12 @@ type pointType struct {
 	Pos string `xml:"pos"`
 }
 
+//Kind return kind of GeoObject
 func (g GeoObject) Kind() string {
 	return g.MetaDataProperty.GeocoderMetaData.Kind
 }
 
+//GeoPoint return coordinates of GeoObject
 func (g GeoObject) GeoPoint() (*GeoPoint, error) {
 	geoPoint, err := NewGeoPoint(g.Point.Pos)
 	if err != nil {
@@ -80,38 +82,47 @@ func (g GeoObject) GeoPoint() (*GeoPoint, error) {
 	return geoPoint, nil
 }
 
+//Address return address string of GeoObject
 func (g GeoObject) Address() string {
 	return g.MetaDataProperty.GeocoderMetaData.Text
 }
 
+//Country return country name of GeoObject
 func (g GeoObject) Country() string {
 	return g.MetaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryName
 }
 
+//CountryCode return country code of GeoObject
 func (g GeoObject) CountryCode() string {
 	return g.MetaDataProperty.GeocoderMetaData.AddressDetails.Country.CountryNameCode
 }
 
+//AdministrativeArea return administrative area of GeoObject
 func (g GeoObject) AdministrativeArea() string {
 	return g.MetaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName
 }
 
+//SubAdministrativeArea return subadministrative area of GeoObject
 func (g GeoObject) SubAdministrativeArea() string {
 	return g.MetaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.SubAdministrativeAreaName
 }
 
+//Locality return locality of GeoObject
 func (g GeoObject) Locality() string {
 	return g.MetaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName
 }
 
+//Thoroughfare return thoroughfare of GeoObject
 func (g GeoObject) Thoroughfare() string {
 	return g.MetaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.Thoroughfare.ThoroughfareName
 }
 
+//Premise return premise of GeoObject
 func (g GeoObject) Premise() string {
 	return g.MetaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.Thoroughfare.Premise.PremiseNumber
 }
 
+//Scope return scope of GeoObject
 func (g GeoObject) Scope() *Scope {
 	changeOrder := regexp.MustCompile(`^(\S+)\s(\S+)$`)
 	lowerCorner, _ := NewGeoPoint(changeOrder.ReplaceAllString(g.BoundedBy.Envelope.LowerCorner, "$2 $1"))
